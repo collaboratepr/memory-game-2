@@ -1,6 +1,6 @@
 // Memory controller
 var memoryController = (function() {
-    var data = {
+    let data = {
         titleImages : ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png", "image6.png"],
         gameBoardTitleImages : [],
         cards: [],
@@ -16,17 +16,19 @@ var memoryController = (function() {
     };
 
     function shuffleTitleImagesArray(originArr) {
-        var newArray = originArr.slice(0); //copy of old array
-        for (var c = 0; c < newArray.length; c++) {
-            var b = Math.floor(Math.random() * (c + 1));
-            var a = newArray[c];
+        let newArray = originArr.slice(0),
+            c; //copy of old array
+        for (c = 0; c < newArray.length; c++) {
+            let a, b;
+            b = Math.floor(Math.random() * (c + 1));
+            a = newArray[c];
             newArray[c] = newArray[b];
             newArray[b] = a;
         }
         return newArray;
     }
 
-    var Card = function(imageName, imageSrc) {
+    let Card = function(imageName, imageSrc) {
         this.name = imageName;
         this.src = imageSrc;
         this.viewed = false;
@@ -42,7 +44,7 @@ var memoryController = (function() {
         }
     };
 
-    var updateViewed = function() {
+    let updateViewed = function() {
         // 1. add until all similar cards have found
         data.countViewed++;
 
@@ -54,7 +56,7 @@ var memoryController = (function() {
 
     return {
         createGameBoardCards: function() {
-            var gameBoardTitleImages, shuffledArray;
+            let gameBoardTitleImages, shuffledArray;
 
             // 1. Create solution array
             data.gameBoardTitleImages = data.titleImages.concat(data.titleImages);
@@ -69,7 +71,7 @@ var memoryController = (function() {
 
         showCard: function(id) {
             // Check if not more that two cards were viewed and image has not clicked twice
-            var cardsFlippedUnderTwoCards = data.cardsFlippedOver < 2,
+            let cardsFlippedUnderTwoCards = data.cardsFlippedOver < 2,
                 isLastViewedCard = id != data.lastCardViewed,
                 allowedToView = !(data.cards[id - 1]).isViewed;
 
@@ -143,8 +145,8 @@ var memoryController = (function() {
 
 
 // UI controller
-var UIController = (function() {
-    var DOMStrings = {
+let UIController = (function() {
+    let DOMStrings = {
         gameBoard: "game-board",
         defaultImage: "happy.png",
         resetBtnContainer: "game-control",
@@ -161,10 +163,10 @@ var UIController = (function() {
     return {
 
         displayGameBoardCards: function(cards) {
-            var cardsHTML = "", newCard, index;
+            let cardsHTML = "", newCard, index, i;
 
             // 1. Create cards
-            for (var i in cards) {
+            for (i in cards) {
                 index = String(parseInt(i) + 1);
                 newCard = DOMStrings.card.replace("%id%", index);
                 cardsHTML += newCard;
@@ -203,20 +205,22 @@ var UIController = (function() {
 
 
 // Project controller
-var projectController = (function(memCtrl, UICtrl) {
-    var time = {
-        hours: 0,
-        minutes: 0,
-        seconds: 0
-    };
+let projectController = (function(memCtrl, UICtrl) {
+    let time = {
+            hours: 0,
+            minutes: 0,
+            seconds: 0
+        },
+        fullTime,
+        DOM,
+        gameBoardData,
+        eventHandler;
 
-    var fullTime;
+    DOM = UICtrl.getDOM();
 
-    var DOM = UICtrl.getDOM();
+    gameBoardData = memCtrl.getData();
 
-    var gameBoardData = memCtrl.getData();
-
-    var eventHandler = function() {
+    eventHandler = function() {
 
         window.addEventListener("load", function () {
             // 1. Create cards data
@@ -234,12 +238,14 @@ var projectController = (function(memCtrl, UICtrl) {
 
             if (event.target.nodeName === "IMG" && !gameBoardData.gameIsFinished) {
                 // 1. Get card id
-                var cardId = event.target.id.split("-");
+                let cardId = event.target.id.split("-"),
+                    ID,
+                    imageToShow;
 
-                var ID = cardId[1];
+                ID = cardId[1];
 
                 // 2. Update the card image in UI
-                var imageToShow = memCtrl.showCard(ID);
+                imageToShow = memCtrl.showCard(ID);
 
                 // We allowed to see just two images each time
                 if (!isNaN(imageToShow) && imageToShow != "") {
@@ -275,7 +281,7 @@ var projectController = (function(memCtrl, UICtrl) {
         });
     };
 
-    var resetTime = function () {
+    let resetTime = function () {
         clearInterval(fullTime);
         time = {
             hours: 0,
@@ -284,7 +290,7 @@ var projectController = (function(memCtrl, UICtrl) {
         };
     };
 
-    var addTime = function() {
+    let addTime = function() {
         memCtrl.setScore();
         time.seconds++;
 
@@ -300,7 +306,7 @@ var projectController = (function(memCtrl, UICtrl) {
             }
         }
 
-        var timeHours = (time.hours ? (time.hours > 9 ? time.hours : "0" + time.hours) : "00"),
+        let timeHours = (time.hours ? (time.hours > 9 ? time.hours : "0" + time.hours) : "00"),
             timeMinutes = (time.minutes ? (time.minutes > 9 ? time.minutes : "0" + time.minutes) : "00"),
             timeSecond = (time.seconds > 9 ? time.seconds : "0" + time.seconds),
 
@@ -311,17 +317,17 @@ var projectController = (function(memCtrl, UICtrl) {
         calcTime();
     };
 
-    var calcTime = function() {
+    let calcTime = function() {
         fullTime = setTimeout(addTime, 1000);
     };
 
-    var setGameMessage = function (message) {
+    let setGameMessage = function (message) {
         UICtrl.setMessage(message);
         UICtrl.setButtonText("Restart Game");
         clearInterval(gameBoardData.messageTimer);
     };
 
-    var hideCards = function() {
+    let hideCards = function() {
         if(gameBoardData.timerReset == 1) {
             // 1. Hide cards image in the UI and set it the default
             UICtrl.hideCardImage(gameBoardData.flipArray[0].name);
@@ -332,7 +338,7 @@ var projectController = (function(memCtrl, UICtrl) {
         }
     };
 
-    var checkTwoCards = function () {
+    let checkTwoCards = function () {
         // Cards are not equal
         if (memCtrl.checkCardsAreEqual() ) {
 
