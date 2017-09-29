@@ -1,5 +1,5 @@
 // Memory controller
-var memoryController = (function() {
+const memoryController = (function() {
     let data = {
         titleImages : ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png", "image6.png"],
         gameBoardTitleImages : [],
@@ -16,8 +16,8 @@ var memoryController = (function() {
     };
 
     function shuffleTitleImagesArray(originArr) {
-        let newArray = originArr.slice(0),
-            c; //copy of old array
+        let newArray = originArr.slice(0), //copy of old array
+            c;
 
         for (c = 0; c < newArray.length; c++) {
             let a, b;
@@ -54,20 +54,17 @@ var memoryController = (function() {
         data.flipArray[1].setViewed;
     };
 
-
     return {
         createGameBoardCards: function() {
-            let gameBoardTitleImages, shuffledArray;
+            let shuffledArray;
 
             // 1. Create solution array
             data.gameBoardTitleImages = data.titleImages.concat(data.titleImages);
 
-            shuffledArray = shuffleTitleImagesArray(data.gameBoardTitleImages); //old array is unchanged, we created new shuffled array based on unput of our shuffle function
+            shuffledArray = shuffleTitleImagesArray(data.gameBoardTitleImages); //old array is unchanged, we created new shuffled array based on input of our shuffle function
 
             // 2. Create cards objects array
-            data.cards = shuffledArray.map(function (image, index) {
-                return new Card(`image-${(index + 1)}`, image);
-            });
+            data.cards = shuffledArray.map( (image, index) => new Card(`image-${(index + 1)}`, image) );
         },
 
         showCard: function(id) {
@@ -142,8 +139,6 @@ var memoryController = (function() {
 
 })();
 
-
-
 // UI controller
 let UIController = (function() {
     let DOMStrings = {
@@ -157,8 +152,6 @@ let UIController = (function() {
         </div></div>`,
         timeDelimiter: ":"
     };
-
-
 
     return {
 
@@ -222,7 +215,7 @@ let projectController = (function(memCtrl, UICtrl) {
 
     eventHandler = function() {
 
-        window.addEventListener("load", function () {
+        window.addEventListener("load", () => {
             // 1. Create cards data
             memCtrl.createGameBoardCards();
 
@@ -234,7 +227,7 @@ let projectController = (function(memCtrl, UICtrl) {
         });
 
         // When each card was clicked
-        document.getElementById(DOM.gameBoard).addEventListener("click", function(event) {
+        document.getElementById(DOM.gameBoard).addEventListener("click", event => {
 
             if (event.target.nodeName === "IMG" && !gameBoardData.gameIsFinished) {
                 // 1. Get card id
@@ -261,7 +254,7 @@ let projectController = (function(memCtrl, UICtrl) {
         });
 
         // When reset button was clicked
-        document.getElementById(DOM.resetBtnContainer).addEventListener("click", function() {
+        document.getElementById(DOM.resetBtnContainer).addEventListener("click", () => {
             // 1. Reset game score and isFinished variable
             memCtrl.resetGame();
 
