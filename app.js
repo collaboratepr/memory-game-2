@@ -18,6 +18,7 @@ var memoryController = (function() {
     function shuffleTitleImagesArray(originArr) {
         let newArray = originArr.slice(0),
             c; //copy of old array
+
         for (c = 0; c < newArray.length; c++) {
             let a, b;
             b = Math.floor(Math.random() * (c + 1));
@@ -65,7 +66,7 @@ var memoryController = (function() {
 
             // 2. Create cards objects array
             data.cards = shuffledArray.map(function (image, index) {
-                return new Card("image-" + (index + 1), image);
+                return new Card(`image-${(index + 1)}`, image);
             });
         },
 
@@ -84,7 +85,6 @@ var memoryController = (function() {
                 return id;
             }
             else {
-
                 return false;
             }
         },
@@ -152,9 +152,9 @@ let UIController = (function() {
         resetBtnContainer: "game-control",
         messageBox: "message",
         gameTime: "game-time",
-        card: "<div class='col-lg-2 col-md-3 col-xs-4 game-tile'><div class='game-tile-inside'>" +
-        "<img src='img/happy.png' class='flip-image' id='image-%id%'/>"+
-        "</div></div>",
+        card: `<div class='col-lg-2 col-md-3 col-xs-4 game-tile'><div class='game-tile-inside'>
+        <img src='img/happy.png' class='flip-image' id='image-%id%'/>
+        </div></div>`,
         timeDelimiter: ":"
     };
 
@@ -177,11 +177,11 @@ let UIController = (function() {
         },
 
         displayCardImage: function(id, image) {
-            document.getElementById("image-" + id).src = "img/" + image;
+            document.getElementById(`image-${id}`).src = `img/${image}`;
         },
 
         hideCardImage: function(id) {
-            document.getElementById(id).src = "img/" + DOMStrings.defaultImage;
+            document.getElementById(id).src = `img/${DOMStrings.defaultImage}`;
         },
 
         displayTime: function(time) {
@@ -306,9 +306,9 @@ let projectController = (function(memCtrl, UICtrl) {
             }
         }
 
-        let timeHours = (time.hours ? (time.hours > 9 ? time.hours : "0" + time.hours) : "00"),
-            timeMinutes = (time.minutes ? (time.minutes > 9 ? time.minutes : "0" + time.minutes) : "00"),
-            timeSecond = (time.seconds > 9 ? time.seconds : "0" + time.seconds),
+        let timeHours = (time.hours ? (time.hours > 9 ? time.hours : `0${time.hours}`) : "00"),
+            timeMinutes = (time.minutes ? (time.minutes > 9 ? time.minutes : `0${time.minutes}`) : "00"),
+            timeSecond = (time.seconds > 9 ? time.seconds : `0${time.seconds}`),
 
             formatTime = timeHours + DOM.timeDelimiter + timeMinutes + DOM.timeDelimiter + timeSecond;
 
@@ -362,7 +362,7 @@ let projectController = (function(memCtrl, UICtrl) {
         }
         else {
             // 2. check for showing reset button
-            UICtrl.setMessage("Game over! your score is " + memCtrl.getScore() + " from 100 :)");
+            UICtrl.setMessage(`Game over! your score is ${memCtrl.getScore()} from 100 :)`);
 
             UICtrl.setButtonText("Play Again");
 
