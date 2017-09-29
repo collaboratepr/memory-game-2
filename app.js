@@ -55,7 +55,7 @@ const memoryController = (function() {
     };
 
     return {
-        createGameBoardCards: function() {
+        createGameBoardCards() {
             let shuffledArray;
 
             // 1. Create solution array
@@ -67,7 +67,7 @@ const memoryController = (function() {
             data.cards = shuffledArray.map( (image, index) => new Card(`image-${(index + 1)}`, image) );
         },
 
-        showCard: function(id) {
+        showCard(id) {
             // Check if not more that two cards were viewed and image has not clicked twice
             let cardsFlippedUnderTwoCards = data.cardsFlippedOver < 2,
                 isLastViewedCard = id != data.lastCardViewed,
@@ -86,7 +86,7 @@ const memoryController = (function() {
             }
         },
 
-        resetFlip: function() {
+        resetFlip() {
             data.flipArray = [];
             data.cardsFlippedOver = 0;
             clearInterval(data.timer);
@@ -94,14 +94,14 @@ const memoryController = (function() {
             data.timerReset = 0;
         },
 
-        resetGame: function() {
+        resetGame() {
             data.countViewed = 0;
             data.gameIsFinished = false;
             data.cards = [];
             data.totalScore = 100;
         },
 
-        checkCardsAreEqual: function() {
+        checkCardsAreEqual() {
             // Checking for are two cards equal
             if (data.flipArray[0].src == data.flipArray[1].src) {
                 updateViewed();
@@ -114,25 +114,25 @@ const memoryController = (function() {
             }
         },
 
-        checkGameIsFinished: function() {
+        checkGameIsFinished() {
             if (data.titleImages.length == data.countViewed) {
                 data.gameIsFinished = true;
             }
         },
 
-        getGameBoardCards: function () {
+        getGameBoardCards () {
             return data.cards;
         },
 
-        setScore: function() {
+        setScore() {
             data.totalScore -= 1;
         },
 
-        getScore: function() {
+        getScore() {
             return data.totalScore;
         },
 
-        getData: function() {
+        getData() {
             return data;
         }
     };
@@ -154,8 +154,7 @@ let UIController = (function() {
     };
 
     return {
-
-        displayGameBoardCards: function(cards) {
+        displayGameBoardCards(cards) {
             let cardsHTML = "", newCard, index, i;
 
             // 1. Create cards
@@ -169,27 +168,27 @@ let UIController = (function() {
             document.getElementById(DOMStrings.gameBoard).innerHTML = cardsHTML;
         },
 
-        displayCardImage: function(id, image) {
+        displayCardImage(id, image) {
             document.getElementById(`image-${id}`).src = `img/${image}`;
         },
 
-        hideCardImage: function(id) {
+        hideCardImage(id) {
             document.getElementById(id).src = `img/${DOMStrings.defaultImage}`;
         },
 
-        displayTime: function(time) {
+        displayTime(time) {
             document.getElementById(DOMStrings.gameTime).textContent = time;
         },
 
-        setMessage: function(message) {
+        setMessage(message) {
             document.getElementById(DOMStrings.messageBox).textContent = message;
         },
 
-        setButtonText: function(text) {
+        setButtonText(text) {
             document.getElementById(DOMStrings.resetBtnContainer).textContent = text;
         },
 
-        getDOM: function() {
+        getDOM() {
             return DOMStrings;
         }
     }
@@ -364,7 +363,7 @@ let projectController = (function(memCtrl, UICtrl) {
     };
 
     return {
-        init: function () {
+        init() {
             // 1. Start Calculating time
             calcTime();
 
