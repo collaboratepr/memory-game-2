@@ -29,23 +29,23 @@ const memoryController = (function() {
         return newArray;
     }
 
-    let Card = function(imageName, imageSrc) {
-        this.name = imageName;
-        this.src = imageSrc;
-        this.viewed = false;
-    };
+    class Card {
+        constructor(imageName, imageSrc) {
+           this.name = imageName;
+            this.src = imageSrc;
+            this.viewed = false;
+        }
 
-    Card.prototype = {
         get setViewed() {
             this.viewed = true;
-        },
+        }
 
         get isViewed() {
             return this.viewed;
         }
-    };
+    }
 
-    let updateViewed = function() {
+    let updateViewed = () => {
         // 1. add until all similar cards have found
         data.countViewed++;
 
