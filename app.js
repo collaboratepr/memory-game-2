@@ -45,14 +45,17 @@ const memoryController = (function() {
         }
     }
 
-    let updateViewed = () => {
-        // 1. add until all similar cards have found
-        data.countViewed++;
+    /*
+    optimizing function by passing data as parameter instead of modify outer resource
+     */
+    function updateViewed(countViewed, flipArray) {
+        // 1. Set true equal images viewed property
+        flipArray[0].setViewed;
+        flipArray[1].setViewed;
 
-        // 2. Set true equal images viewed property
-        data.flipArray[0].setViewed;
-        data.flipArray[1].setViewed;
-    };
+        // 2. add until all similar cards have found
+        return countViewed += 1;
+    }
 
     return {
         createGameBoardCards() {
@@ -104,7 +107,8 @@ const memoryController = (function() {
         checkCardsAreEqual() {
             // Checking for are two cards equal
             if (data.flipArray[0].src == data.flipArray[1].src) {
-                updateViewed();
+                data.countViewed = updateViewed(data.countViewed, data.flipArray);
+
                 this.resetFlip();
                 return true;
             }

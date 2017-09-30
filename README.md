@@ -16,3 +16,6 @@ A Javascript game using ES2015.# memory-game
         
 - **Revision_05**
     <br>Using Class definition
+
+- **Revision_06**    
+    1. Optimizing updateViewed function
